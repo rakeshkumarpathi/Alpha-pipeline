@@ -1,3 +1,4 @@
+import pandas as pd
 from extract import fetch_stock
 
 from transform import (
@@ -34,3 +35,8 @@ save_silver(silver_df, symbol)
 gold_df = create_features(silver_df)
 
 save_gold(gold_df, symbol)
+
+df = pd.read_parquet("data/gold/AAPL_features.parquet")
+
+print(df.columns)
+print(df.head())
