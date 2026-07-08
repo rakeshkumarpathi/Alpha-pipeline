@@ -1,3 +1,13 @@
 venv/
+.venv-wsl/
+.env
+
 __pycache__/
 *.pyc
+
+data/bronze/
+data/silver/
+data/gold/
+data/spark_output/
+
+.DS_Store
