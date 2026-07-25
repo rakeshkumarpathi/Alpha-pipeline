@@ -15,12 +15,7 @@ The processed Gold layer will later be used for **Machine Learning-based stock p
 
 # 🏗️ Project Methodology
 
-> The following methodology illustrates the complete Azure workflow implemented in this project.
-
-<p align="center">
-    <img src="C:\Users\rakes\Documents\Alpha-Pipeline\src\architecture\methodology.png" width="1000">
-</p>
-
+![Project Methodology](architecture/methodology.png)
 ---
 
 # ☁️ Final Azure Architecture
