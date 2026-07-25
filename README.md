@@ -1,165 +1,311 @@
-# AlphaPipeline
+# 🚀 AlphaPipeline
+## End-to-End Cloud Data Engineering Pipeline using Microsoft Azure
 
-AlphaPipeline is an end-to-end financial data engineering project that collects stock market data, processes it using a Medallion Architecture, stores analytics-ready data in PostgreSQL, performs analytics and data quality checks, and uses PySpark for distributed data processing.
+---
+
+## 📌 Project Overview
+
+AlphaPipeline is an end-to-end Cloud Data Engineering project that demonstrates how raw financial market data is transformed into analytics-ready datasets using Microsoft's Azure ecosystem.
+
+The project implements the **Medallion Architecture (Bronze → Silver → Gold)** using **Azure Data Lake Storage Gen2**, **Azure Databricks**, and **Azure Data Factory** to automate the ETL workflow.
+
+The processed Gold layer will later be used for **Machine Learning-based stock prediction** and deployed as a complete cloud application.
+
+---
+
+# 🏗️ Project Methodology
+
+> The following methodology illustrates the complete Azure workflow implemented in this project.
+
+<p align="center">
+    <img src="architecture/methodology.png" width="1000">
+</p>
+
+---
+
+# ☁️ Final Azure Architecture
+
+```
+Yahoo Finance
+        │
+        ▼
+Azure Data Lake Storage Gen2
+(Bronze Layer)
+        │
+        ▼
+Azure Databricks
+(Bronze → Silver)
+        │
+        ▼
+Azure Data Lake Storage Gen2
+(Silver Layer)
+        │
+        ▼
+Azure Databricks
+(Silver → Gold)
+        │
+        ▼
+Azure Data Lake Storage Gen2
+(Gold Layer)
+        │
+        ▼
+Azure Data Factory
+(Pipeline Orchestration)
+        │
+        ▼
+Machine Learning (Coming Soon)
+        │
+        ▼
+Deployment (Coming Soon)
+```
+
+---
+
+# 🛠️ Technology Stack
+
+## Cloud Services
+
+- Microsoft Azure
+- Azure Data Lake Storage Gen2
+- Azure Databricks
+- Azure Data Factory
+
+## Programming Language
+
+- Python
+- PySpark
+
+## Data Source
+
+- Yahoo Finance (yfinance)
+
+## Storage Format
+
+- Parquet
 
 ## Architecture
 
-Yahoo Finance  
-↓  
-Data Ingestion  
-↓  
-Bronze Layer (Raw Data)  
-↓  
-Silver Layer (Cleaned Data)  
-↓  
-Gold Layer (Feature-Engineered Data)  
-↓  
-PostgreSQL Data Warehouse  
-↓  
-Analytics & Data Quality  
-↓  
-PySpark Processing  
-↓  
-Processed Parquet Output  
+- ETL Pipeline
+- Medallion Architecture
+- Data Validation
+- Feature Engineering
 
-## Phase 1 – Data Ingestion
+---
 
-- Extracted stock market data using Yahoo Finance.
-- Built a Python-based ETL pipeline.
-- Stored raw stock data in Parquet format.
+# 📂 Project Workflow
 
-## Phase 2 – Medallion Architecture
+## Step 1 — Data Ingestion
 
-Implemented Bronze, Silver, and Gold data layers.
+Financial stock market data is collected from Yahoo Finance.
 
-**Bronze Layer**
-- Stores raw stock market data.
+The raw dataset is uploaded into the **Bronze container** inside Azure Data Lake Storage Gen2.
 
-**Silver Layer**
-- Data cleaning.
-- Duplicate removal.
-- Null handling.
+---
 
-**Gold Layer**
-- Analytics-ready data.
-- Feature engineering.
+## Step 2 — Bronze Layer
 
-Engineered features:
+The Bronze layer stores the raw, unprocessed dataset.
 
-- MA_5
-- MA_20
+Example:
+
+```
+AAPL_20260702.parquet
+```
+
+No transformations are applied in this layer.
+
+---
+
+## Step 3 — Bronze → Silver
+
+Executed using Azure Databricks Notebook:
+
+```
+bronze_to_silver
+```
+
+Operations performed:
+
+- Read Bronze data
+- Remove duplicate records
+- Remove null values
+- Validate schema
+- Validate data quality
+- Write cleaned dataset into Silver Layer
+
+Output:
+
+```
+AAPL_clean.parquet
+```
+
+---
+
+## Step 4 — Silver Layer
+
+The Silver layer stores cleaned and validated data.
+
+This layer becomes the input for feature engineering.
+
+---
+
+## Step 5 — Silver → Gold
+
+Executed using Azure Databricks Notebook:
+
+```
+silver_to_gold
+```
+
+Feature Engineering:
+
 - Daily Return
+- Moving Average (MA5)
+- Moving Average (MA20)
 - Volatility
 
-## Phase 3 – Data Warehouse
+Output:
 
-- PostgreSQL data warehouse.
-- Schema mapping and validation.
-- Parquet to PostgreSQL loading.
-- SQLAlchemy database connectivity.
-- Full-refresh loading strategy.
+```
+AAPL_features.parquet
+```
 
-## Phase 4 – Analytics Layer
+---
 
-- SQL analytics queries.
-- Business KPIs.
-- Data quality reports.
-- Console analytics dashboard.
-- Stock price visualizations.
-- Moving average analysis.
-- Trading volume analysis.
-- Daily return analysis.
-- Volatility analysis.
-- Combined dashboard visualization.
+## Step 6 — Gold Layer
 
-## Phase 5 – Distributed Data Processing with PySpark
+The Gold layer stores analytics-ready datasets.
 
-- Created and configured SparkSession.
-- Read Parquet datasets using Spark.
-- Used Spark DataFrames for distributed processing.
-- Implemented Spark transformations.
-- Executed analytical queries using Spark SQL.
-- Performed distributed data validation.
-- Inspected Spark DataFrame schemas.
-- Used caching and persistence concepts.
-- Learned partition management using `repartition()` and `coalesce()`.
-- Inspected Spark execution plans using `explain()`.
-- Wrote processed Spark DataFrames back to Parquet format.
+This data is prepared for:
 
-## WSL and Linux Development Environment
+- Machine Learning
+- Dashboarding
+- Reporting
+- Prediction
 
-PySpark was executed inside Windows Subsystem for Linux (WSL2) using Ubuntu to provide a Linux-based Spark development environment.
+---
 
-The environment includes:
+## Step 7 — Azure Data Factory
 
-- WSL2 with Ubuntu.
-- OpenJDK 17 for running Apache Spark.
-- Python virtual environment for dependency isolation.
-- PySpark 4.1.2.
-- Hadoop 3.4.2 runtime used by Spark.
-- Linux-based execution of Spark pipelines.
-- Parquet reading and writing through Spark.
-- Separate Windows development and Git workflow with WSL used as the PySpark execution environment.
+Azure Data Factory orchestrates the complete ETL workflow.
 
-The project code is maintained in the Windows project directory and synchronized with the WSL environment when running and testing PySpark pipelines.
+Pipeline:
 
-## Pandas vs PySpark
+```
+bronze_to_silver
+        │
+        ▼
+silver_to_gold
+```
 
-| Pandas | PySpark |
-|---|---|
-| Single-machine processing | Distributed processing |
-| Suitable for small and medium datasets | Designed for large datasets |
-| Eager execution | Lazy execution |
-| Uses local system memory | Can distribute processing across multiple machines |
-| Simple local DataFrames | Distributed Spark DataFrames |
+Pipeline Activities
 
-## Tech Stack
+- Notebook Activity
+- Linked Service
+- Access Token Authentication
+- Success Dependency
+- Validate Pipeline
+- Publish Pipeline
+- Debug Pipeline
 
-- Python
-- Pandas
-- PySpark
-- Apache Spark
-- PostgreSQL
-- SQLAlchemy
-- Parquet
-- Yahoo Finance API
-- Matplotlib
-- Git
-- GitHub
-- WSL2
-- Ubuntu Linux
-- Java 17
+Once executed, Azure Data Factory automatically performs the complete ETL workflow from Bronze to Gold.
 
-## Project Structure
+---
 
-    Alpha-Pipeline/
-    ├── config/
-    ├── data/
-    │   ├── bronze/
-    │   ├── silver/
-    │   ├── gold/
-    │   └── spark_output/
-    ├── reports/
-    ├── src/
-    │   ├── extract.py
-    │   ├── transform.py
-    │   ├── bronze.py
-    │   ├── silver.py
-    │   ├── gold.py
-    │   ├── warehouse.py
-    │   ├── load_warehouse.py
-    │   ├── analytics.py
-    │   ├── queries.py
-    │   ├── quality.py
-    │   ├── dashboard.py
-    │   ├── visualization.py
-    │   ├── spark_session.py
-    │   ├── spark_read.py
-    │   ├── spark_transform.py
-    │   ├── spark_validation.py
-    │   ├── spark_write.py
-    │   ├── spark_main.py
-    │   └── main.py
-    ├── requirements.txt
-    ├── .gitignore
-    └── README.md
+# 🥉🥈🥇 Medallion Architecture
+
+| Layer | Purpose |
+|--------|----------|
+| Bronze | Raw data storage |
+| Silver | Cleaned and validated data |
+| Gold | Feature engineered analytics-ready data |
+
+---
+
+# 📁 Project Structure
+
+```
+AlphaPipeline
+│
+├── architecture/
+│   └── methodology.png
+│
+├── reports/
+│
+├── src/
+│   │
+│   ├── azure/
+│   │   ├── bronze_to_silver.ipynb
+│   │   └── silver_to_gold.ipynb
+│   │
+│   └── local_prototype/
+│       ├── pandas/
+│       └── pyspark/
+│
+├── README.md
+├── requirements.txt
+└── .gitignore
+```
+
+---
+
+# ✅ Completed Features
+
+- Azure Resource Group
+- Azure Data Lake Storage Gen2
+- Azure Databricks Workspace
+- Azure Compute Cluster
+- Azure Data Factory
+- Medallion Architecture
+- Bronze Layer
+- Silver Layer
+- Gold Layer
+- Data Validation
+- Duplicate Removal
+- Null Handling
+- Feature Engineering
+- Pipeline Orchestration
+
+---
+
+# 📈 Machine Learning
+
+🚧 **This section will be completed in Phase 7.**
+
+---
+
+# 🌐 Deployment
+
+🚧 **This section will be completed in Phase 8.**
+
+---
+
+# 🔄 Project Evolution
+
+This project was intentionally developed in multiple stages.
+
+1. Local ETL prototype using **Pandas**
+2. Distributed processing prototype using **PySpark**
+3. Final cloud implementation using:
+
+- Azure Data Lake Storage Gen2
+- Azure Databricks
+- Azure Data Factory
+
+The local implementations are preserved inside:
+
+```
+src/local_prototype/
+```
+
+The Azure implementation represents the final architecture of this project.
+
+---
+
+# 📬 Contact
+
+**Rakesh Kumar**
+
+B.Tech Computer Science Engineering
+
+Cloud Data Engineering | Machine Learning | Azure
