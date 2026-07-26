@@ -40,3 +40,6 @@ df = pd.read_parquet("data/gold/AAPL_features.parquet")
 
 print(df.columns)
 print(df.head())
+print(df.index.min())
+print(df.index.max())
+print(df.shape)

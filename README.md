@@ -15,7 +15,7 @@ The processed Gold layer will later be used for **Machine Learning-based stock p
 
 # 🏗️ Project Methodology
 
-![Project Methodology](architecture/methodology.png)
+<img src="./src/architecture/methodology.png" width="1000">
 ---
 
 # ☁️ Final Azure Architecture

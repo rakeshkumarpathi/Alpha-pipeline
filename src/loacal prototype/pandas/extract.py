@@ -4,7 +4,7 @@ def fetch_stock(symbol):
 
     df = yf.download(
         symbol,
-        period="6mo",
+        period="5y",
         auto_adjust=True
     )
 
