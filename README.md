@@ -15,6 +15,7 @@ The processed Gold layer will later be used for **Machine Learning-based stock p
 
 # 🏗️ Project Methodology
 
+<img src="./src/architecture/project.png" width="1000">
 <img src="./src/architecture/methodology.png" width="1000">
 ---
 
