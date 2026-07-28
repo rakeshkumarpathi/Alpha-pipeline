@@ -2,19 +2,9 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import (
-    Input,
-    LSTM,
-    Dense,
-    Dropout
-)
-
-from tensorflow.keras.callbacks import (
-    EarlyStopping,
-    ModelCheckpoint,
-    ReduceLROnPlateau
-)
+from keras.models import Sequential
+from keras.layers import Input, LSTM, Dense, Dropout
+from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 
 # ==========================================
 # Load Data

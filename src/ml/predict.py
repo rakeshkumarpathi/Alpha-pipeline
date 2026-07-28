@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from tensorflow.keras.models import load_model
+from keras.models import load_model
 
 # =====================================
 # Load Model & Scaler
